@@ -8,15 +8,24 @@ module.exports = React.createClass({
       visible:false
     };
   },
-  handleClick:function(){
-    console.log('visible', !this.state.visible);
+  handleButtonClick:function(){
     this.setState({
       visible:!this.state.visible
     });
   },
+  handleItemClick:function(item){
+    this.setState({
+      title:item,
+      visible:false
+    });
+  },
   render:function(){
     return <div className="dropdown">
-    	<Button title={this.state.title || this.props.title} btnClass="btn btn-info" handleClick={this.handleClick} />
+    	<Button 
+        title={this.state.title || this.props.title} 
+        btnClass="btn btn-info" 
+        handleClick={this.handleButtonClick}
+        subTitleClassName="caret" subTitle=""/>
       <ul className={'dropdown-menu ' + (this.state.visible? 'show' : '') }>
      		{this.renderItens()}
       </ul>
@@ -24,7 +33,7 @@ module.exports = React.createClass({
   },
   renderItens:function(){
   	return this.props.items.map(function(item){
-  		return <ListItem option={item} />;
-  	})
+  		return <ListItem className={item===this.state.title? 'active' : ''} handleClick={this.handleItemClick} option={item} />;
+  	}.bind(this))
   }
 });
